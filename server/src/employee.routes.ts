@@ -1,9 +1,40 @@
-import * as express from "express";
+import express = require("express");
 import * as mongodb from "mongodb";
 import { collections } from "./database";
 
+
+////////////////////
 export const employeeRouter = express.Router();
 employeeRouter.use(express.json());
+////////////////////
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          Employee:
+ *              type: object
+ *              properties:
+ *                  _id:
+ *                      type: string
+ *                  name:
+ *                      type: string
+ *                  position:
+ *                      type: string
+ *                  level:
+ *                      type: string
+ *                      
+ */
+
+/**
+ * @swagger
+ * /employees:
+ *  get:
+ *      summary: get All employee details
+ *      description: Use to request all employees
+ *      responses:
+ *          '200':
+ *              description: data of all employees retrived successfully.
+ */
 
 employeeRouter.get("/", async (_req, res) => {
     try {
@@ -13,6 +44,22 @@ employeeRouter.get("/", async (_req, res) => {
         res.status(500).send(error.message);
     }
 });
+
+/**
+ * @swagger
+ * /employees/{id}:
+ *  get:
+ *      summary: get employee details on one employee using id
+ *      description: Use to get single employee details based on employee id example => 63f6fa23925a8e8f91cc0855
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: hexadecimal
+ *      responses:
+ *          '200':
+ *              description: get single employee details Successfully
+ */
 
 employeeRouter.get("/:id", async (req, res) => {
     try {
@@ -30,6 +77,24 @@ employeeRouter.get("/:id", async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /employees:
+ *  post:
+ *      summary: post employee details
+ *      description: Use to post single employee details (use level as anyone from this [mid,senior,junior])   
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Employee'
+ *      responses:
+ *          '201':
+ *              description:  added employee details Successfully.
+ */
+ 
 employeeRouter.post("/", async (req, res) => {
     try {
         const employee = req.body;
@@ -45,6 +110,27 @@ employeeRouter.post("/", async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+
+/**
+ * @swagger
+ * /employees/{id}:
+ *  put:
+ *      summary: Update employee details
+ *      description: Use to update single employee details (use level as anyone from this [mid,senior,junior])
+ *      parameters:
+ *          - in: path
+ *            name: id 
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#components/schemas/Employee'
+ *      responses:
+ *          '200':
+ *              description:  Updated employee details Successfully.
+ */
 
 employeeRouter.put("/:id", async (req, res) => {
     try {
@@ -65,6 +151,22 @@ employeeRouter.put("/:id", async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+
+/**
+ * @swagger
+ * /employees/{id}:
+ *  delete:
+ *      summary: delete employee details of one employee using id
+ *      description: Use to delete single employee details based on employee id example => 63f6fa23925a8e8f91cc0855
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *      responses:
+ *          '202':
+ *              description: Employee details are deleted for above employee.
+ */
 
 employeeRouter.delete("/:id", async (req, res) => {
     try {

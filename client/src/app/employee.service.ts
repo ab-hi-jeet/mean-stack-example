@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject} from 'rxjs';
 import { Employee } from './employee';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class EmployeeService {
     return this.employees$;
   }
 
-  getEmployee(id: string): Observable<Employee> {
+  getEmployee(id:string): Observable<Employee> {
     return this.httpClient.get<Employee>(`${this.url}/employees/${id}`);
   }
 
